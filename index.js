@@ -18,8 +18,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(expressValidator());
 app.use(cors());
 
 const port = process.env.PORT || 7000;
