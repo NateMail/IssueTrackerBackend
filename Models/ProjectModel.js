@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const ProjectSchema = mongoose.Schema({
   about: {
@@ -15,7 +15,7 @@ const ProjectSchema = mongoose.Schema({
     default: Date.now(),
   },
   creator: {
-    type: Mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
@@ -26,7 +26,7 @@ const ProjectSchema = mongoose.Schema({
   issues: [
     {
       issue: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Issue",
       },
     },
@@ -39,13 +39,13 @@ const ProjectSchema = mongoose.Schema({
   permissions: [
     {
       hasPermissions: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     },
   ],
   team: {
-    type: Mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Team",
   },

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const UserSchema = mongoose.Schema({
   aboutMe: {
@@ -54,7 +54,7 @@ const UserSchema = mongoose.Schema({
   myIssues: [
     {
       issue: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Issue",
       },
     },
@@ -62,7 +62,7 @@ const UserSchema = mongoose.Schema({
   myNotes: [
     {
       note: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Note",
       },
     },
@@ -70,7 +70,7 @@ const UserSchema = mongoose.Schema({
   myProjects: [
     {
       project: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Project",
       },
     },
@@ -78,7 +78,7 @@ const UserSchema = mongoose.Schema({
   myTeams: [
     {
       team: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Team",
       },
     },

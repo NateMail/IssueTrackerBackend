@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const NoteSchema = mongoose.Schema({
   body: {
@@ -12,12 +12,12 @@ const NoteSchema = mongoose.Schema({
     default: Date.now(),
   },
   creator: {
-    type: Mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
   issue: {
-    type: Mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Issue",
   },

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 // Add a leader or solo field?
 const TeamSchema = mongoose.Schema({
@@ -10,7 +10,7 @@ const TeamSchema = mongoose.Schema({
   addRequests: [
     {
       user: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     },
@@ -18,7 +18,7 @@ const TeamSchema = mongoose.Schema({
   banned: [
     {
       user: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     },
@@ -32,7 +32,7 @@ const TeamSchema = mongoose.Schema({
     default: Date.now(),
   },
   creator: {
-    type: Mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
@@ -48,7 +48,7 @@ const TeamSchema = mongoose.Schema({
   members: [
     {
       member: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     },
@@ -56,7 +56,7 @@ const TeamSchema = mongoose.Schema({
   projects: [
     {
       project: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Project",
       },
     },
