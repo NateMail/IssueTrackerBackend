@@ -1,5 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 
+// Add a leader or solo field?
 const TeamSchema = mongoose.Schema({
   about: {
     type: String,
