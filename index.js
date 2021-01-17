@@ -1,13 +1,13 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const expressValidator = require("express-validator");
-const cors = require("cors");
-const dotenv = require("dotenv");
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
+
+// Config .env file
 dotenv.config();
 
+// Initiating application
 const app = express();
 
 // Connect to DB
@@ -17,7 +17,6 @@ connectDB();
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(bodyParser.json());
 app.use(cors());
 
 const port = process.env.PORT || 7000;
