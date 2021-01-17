@@ -1,0 +1,12 @@
+----TODO----
+1. Create MongoDB data base and connect 
+2. Controllers
+3. Routes 
+4. Testing
+
+----COMPLETED----
+1. Packages Installed
+2. Git Repository 
+3. Index.js Setup
+4. File Structure 
+5. Models Completed
