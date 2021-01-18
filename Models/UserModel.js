@@ -86,7 +86,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
     minLength: 6,
-    maxLength: 30,
   },
   username: {
     type: String,
@@ -97,6 +96,9 @@ const UserSchema = mongoose.Schema({
   userImage: {
     type: Buffer,
     contentType: String,
+  },
+  updated: {
+    type: Date,
   },
 });
 

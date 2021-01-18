@@ -96,8 +96,52 @@ const getMyProfile = asyncHandler(async (req, res) => {
     throw new Error("User Not Found!");
   }
 });
-/*
-      
-*/
 
-export { authUser, registerUser, getMyProfile };
+// Update User Profile
+const updateMyProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  console.log(req.body);
+  if (user) {
+    user.aboutMe = req.body.aboutMe || user.aboutMe;
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.nickName = req.body.nickName || user.nickName;
+    user.email = req.body.email || user.email;
+    user.updated = Date.now();
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      aboutMe: updatedUser.aboutMe,
+      created: updatedUser.created,
+      completedIssues: updatedUser.completedIssues,
+      completedIssuesLow: updatedUser.completedIssuesLow,
+      completedIssuesMed: updatedUser.completedIssuesMed,
+      completedIssuesHigh: updatedUser.completedIssuesHigh,
+      email: updatedUser.email,
+      firstName: updatedUser.firstName,
+      isAdmin: updatedUser.isAdmin,
+      isSuperAdmin: updatedUser.isSuperAdmin,
+      lastName: updatedUser.lastName,
+      username: updatedUser.username,
+      userImage: updatedUser.userImage,
+      nickName: updatedUser.nickName,
+      myIssues: updatedUser.myIssues,
+      myNotes: updatedUser.myNotes,
+      myProjects: updatedUser.myProjects,
+      myTeams: updatedUser.myTeams,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.staus(404);
+    throw new Error("User Not Found");
+  }
+});
+
+export { authUser, registerUser, getMyProfile, updateMyProfile };

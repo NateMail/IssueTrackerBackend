@@ -5,6 +5,7 @@ import {
   authUser,
   registerUser,
   getMyProfile,
+  updateMyProfile,
 } from "../Controllers/UserController.js";
 import { privateRoutesFunc } from "../Middlewares/protectedRoutes.js";
 
@@ -16,7 +17,7 @@ router.post("/login", authUser);
 router
   .route("/profile")
   .get(privateRoutesFunc, getMyProfile)
-  .put(/* protect, user update method */);
+  .put(privateRoutesFunc, updateMyProfile);
 router
   .route("/:id")
   .delete(/* protect, superAdmin, delete method */)
