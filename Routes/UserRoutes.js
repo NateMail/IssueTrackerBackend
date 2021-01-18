@@ -1,10 +1,11 @@
 import express from "express";
 const router = express.Router();
 // ADD CONTROLLER METHODS //
+import { registerUser } from "../Controllers/UserController.js";
 
 router
   .route("/")
-  .post(/* register user method */)
+  .post(registerUser)
   .get(/* protected route, superAdmin, getAllUsers */);
 router.post("/login" /* authenticate user */);
 router

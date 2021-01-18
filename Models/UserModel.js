@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserSchema = mongoose.Schema({
   aboutMe: {
@@ -53,34 +54,26 @@ const UserSchema = mongoose.Schema({
   },
   myIssues: [
     {
-      issue: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Issue",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Issue",
     },
   ],
   myNotes: [
     {
-      note: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Note",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Note",
     },
   ],
   myProjects: [
     {
-      project: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Project",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
     },
   ],
   myTeams: [
     {
-      team: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Team",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team",
     },
   ],
   nickName: {
@@ -98,13 +91,26 @@ const UserSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    minLength: 5,
+    minLength: 3,
     maxLength: 30,
   },
   userImage: {
     type: Buffer,
     contentType: String,
   },
+});
+
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(20);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 const User = mongoose.model("User", UserSchema);
