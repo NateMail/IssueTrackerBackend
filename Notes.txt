@@ -1,5 +1,4 @@
 ----TODO----
-1. Create MongoDB data base and connect 
 2. Controllers
 3. Routes 
 4. Testing
@@ -10,3 +9,4 @@
 3. Index.js Setup
 4. File Structure 
 5. Models Completed
+6. Create MongoDB data base and connect 
