@@ -6,6 +6,8 @@
     4a. Could use formidable and form data to pass images.
     4b. Could have static profile images on the front that the user can choose from
         - this would mean the photo path would be a string to the file path rather than allowing custom images
+
+
 ----COMPLETED----
 1. Packages Installed
 2. Git Repository 
@@ -13,3 +15,14 @@
 4. File Structure 
 5. Models Completed
 6. Create MongoDB data base and connect 
+
+
+
+----Thoughts----
+. The way Admin should work is if they are owner of the team they will have full admin privileges within that team.
+. Super Admin will be able to CRUD everything 
+. Admin should probably be removed from the user and put on the team instead of permissions 
+. If this is done their should be an Admin / Super Admin here.  Super Admin is creator of team and can full CRUD over team/projects/issues. Admin will have same 
+    privileges but wont be able to remove Super Admin
+. Follow the permissions idea 
+. How to cascade based on a delete 

@@ -6,13 +6,19 @@ import {
   registerUser,
   getMyProfile,
   updateMyProfile,
+  getAllUsers,
+  updateUser,
+  deleteUser,
 } from "../Controllers/UserController.js";
-import { privateRoutesFunc } from "../Middlewares/protectedRoutes.js";
+import {
+  privateRoutesFunc,
+  superAdminFunc,
+} from "../Middlewares/authMiddlewares.js";
 
 router
   .route("/")
   .post(registerUser)
-  .get(/* protected route, superAdmin, getAllUsers */);
+  .get(privateRoutesFunc, superAdminFunc, getAllUsers);
 router.post("/login", authUser);
 router
   .route("/profile")
@@ -20,8 +26,7 @@ router
   .put(privateRoutesFunc, updateMyProfile);
 router
   .route("/:id")
-  .delete(/* protect, superAdmin, delete method */)
-  .get(/*protect, superAdmin, get Specific user */)
-  .put(/* protect, superAdmin, updateUser */);
+  .delete(privateRoutesFunc, superAdminFunc, deleteUser)
+  .put(privateRoutesFunc, superAdminFunc, updateUser);
 
 export default router;

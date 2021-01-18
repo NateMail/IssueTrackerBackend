@@ -28,4 +28,13 @@ const privateRoutesFunc = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { privateRoutesFunc };
+const superAdminFunc = (req, res, next) => {
+  if (req.user && req.user.isSuperAdmin) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error("Not Authorized");
+  }
+};
+
+export { privateRoutesFunc, superAdminFunc };
