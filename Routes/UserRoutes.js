@@ -1,16 +1,21 @@
 import express from "express";
 const router = express.Router();
 // ADD CONTROLLER METHODS //
-import { registerUser } from "../Controllers/UserController.js";
+import {
+  authUser,
+  registerUser,
+  getMyProfile,
+} from "../Controllers/UserController.js";
+import { privateRoutesFunc } from "../Middlewares/protectedRoutes.js";
 
 router
   .route("/")
   .post(registerUser)
   .get(/* protected route, superAdmin, getAllUsers */);
-router.post("/login" /* authenticate user */);
+router.post("/login", authUser);
 router
   .route("/profile")
-  .get(/* protect route, get users profile */)
+  .get(privateRoutesFunc, getMyProfile)
   .put(/* protect, user update method */);
 router
   .route("/:id")

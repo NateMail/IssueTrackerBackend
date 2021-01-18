@@ -7,36 +7,16 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  user.populate("myIssues");
-  user.populate({
-    path: "myNotes",
-    populate: {
-      path: "body",
-    },
-  });
-  user.populate("myProjects");
-  user.populate("myTeams");
+
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
-      aboutMe: user.aboutMe,
-      created: user.created,
-      completedIssues: user.completedIssues,
-      completedIssuesLow: user.completedIssuesLow,
-      completedIssuesMed: user.completedIssuesMed,
-      completedIssuesHigh: user.completedIssuesHigh,
-      email: user.email,
+      username: user.username,
       firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
       isAdmin: user.isAdmin,
       isSuperAdmin: user.isSuperAdmin,
-      lastName: user.lastName,
-      username: user.username,
-      userImage: user.userImage,
-      nickName: user.nickName,
-      myIssues: user.myIssues,
-      myNotes: user.myNotes,
-      myProjects: user.myProjects,
-      myTeams: user.myTeams,
       token: generateToken(user._id),
     });
   } else {
@@ -82,4 +62,42 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser };
+// Get User Profile
+const getMyProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.populate("myIssues");
+    user.populate("myNotes");
+    user.populate("myProjects");
+    user.populate("myTeams");
+    res.json({
+      aboutMe: user.aboutMe,
+      created: user.created,
+      completedIssues: user.completedIssues,
+      completedIssuesLow: user.completedIssuesLow,
+      completedIssuesMed: user.completedIssuesMed,
+      completedIssuesHigh: user.completedIssuesHigh,
+      email: user.email,
+      firstName: user.firstName,
+      isAdmin: user.isAdmin,
+      isSuperAdmin: user.isSuperAdmin,
+      lastName: user.lastName,
+      username: user.username,
+      userImage: user.userImage,
+      nickName: user.nickName,
+      myIssues: user.myIssues,
+      myNotes: user.myNotes,
+      myProjects: user.myProjects,
+      myTeams: user.myTeams,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User Not Found!");
+  }
+});
+/*
+      
+*/
+
+export { authUser, registerUser, getMyProfile };
