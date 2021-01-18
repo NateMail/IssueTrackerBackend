@@ -4,6 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
 
+// Route Imports
+import userRoutes from "./Routes/UserRoutes.js";
+
 // Config .env file
 dotenv.config();
 
@@ -18,8 +21,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(cors());
+app.use("/api/users", userRoutes);
 
-const port = process.env.PORT || 7000;
-app.listen(port, () => {
-  `App listening on port: ${port}`;
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+  console.log(`App listening on port: ${PORT}`);
 });
