@@ -9,18 +9,14 @@ const TeamSchema = mongoose.Schema({
   },
   addRequests: [
     {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   banned: [
     {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   completedProjects: {
@@ -47,18 +43,14 @@ const TeamSchema = mongoose.Schema({
   },
   members: [
     {
-      member: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   projects: [
     {
-      project: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Project",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
     },
   ],
   updated: {
