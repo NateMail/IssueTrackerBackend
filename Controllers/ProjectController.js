@@ -96,4 +96,18 @@ const updateProject = asyncHandler(async (req, res) => {
   }
 });
 
-export { createProject, getMyProjects, updateProject };
+// Delete my Project
+const deleteMyProject = asyncHandler(async (req, res) => {
+  const project = await Project.findById(req.params.projectId);
+  const user = req.user._id;
+
+  if (project && project.creator.equals(user)) {
+    await project.remove();
+    res.json({ message: "Project was deleted successfully" }).status(204);
+  } else {
+    res.status(404);
+    throw new Error("Project not found");
+  }
+});
+
+export { createProject, getMyProjects, updateProject, deleteMyProject };
