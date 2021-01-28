@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Project from "../Models/ProjectModel.js";
 import Team from "../Models/TeamModel.js";
+import { updateMyTeam } from "./TeamController.js";
 
 // Create a project
 
@@ -20,6 +21,10 @@ const createProject = asyncHandler(async (req, res) => {
         team: req.params.teamId,
       });
       const createdProject = await project.save();
+
+      team.projects = [...team.projects, createdProject._id];
+      team.updated = Date.now();
+      await team.save();
 
       res.status(201).json(createdProject);
     } else {
@@ -100,13 +105,25 @@ const updateProject = asyncHandler(async (req, res) => {
 const deleteMyProject = asyncHandler(async (req, res) => {
   const project = await Project.findById(req.params.projectId);
   const user = req.user._id;
+  const team = await Team.findById(project.team);
 
-  if (project && project.creator.equals(user)) {
-    await project.remove();
-    res.json({ message: "Project was deleted successfully" }).status(204);
+  if (team && team.creator.equals(user)) {
+    const idx = team.projects.indexOf(req.params.projectId);
+    team.projects.splice(idx, 1);
+    team.projects = team.projects;
+    team.updated = Date.now();
+    await team.save();
+
+    if (project && project.creator.equals(user)) {
+      await project.remove();
+      res.json({ message: "Project was deleted successfully" }).status(204);
+    } else {
+      res.status(404);
+      throw new Error("Project not found");
+    }
   } else {
     res.status(404);
-    throw new Error("Project not found");
+    throw new Error("Team not found");
   }
 });
 
