@@ -32,4 +32,16 @@ const createProject = asyncHandler(async (req, res) => {
   }
 });
 
-export { createProject };
+// Get My Projects
+const getMyProjects = asyncHandler(async (req, res) => {
+  const myProjects = await Project.find({ creator: req.user._id });
+
+  if (myProjects) {
+    res.json(myProjects);
+  } else {
+    throw new Error("No Projects found!");
+    return;
+  }
+});
+
+export { createProject, getMyProjects };
