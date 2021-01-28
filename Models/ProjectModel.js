@@ -25,10 +25,8 @@ const ProjectSchema = mongoose.Schema({
   },
   issues: [
     {
-      issue: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Issue",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Issue",
     },
   ],
   name: {
@@ -38,10 +36,8 @@ const ProjectSchema = mongoose.Schema({
   },
   permissions: [
     {
-      hasPermissions: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   team: {

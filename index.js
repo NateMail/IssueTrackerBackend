@@ -7,6 +7,7 @@ import connectDB from "./Config/db.js";
 // Route Imports
 import userRoutes from "./Routes/UserRoutes.js";
 import teamRoutes from "./Routes/TeamRoutes.js";
+import projectRoutes from "./Routes/ProjectRoutes.js";
 
 // Config .env file
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/project", projectRoutes);
 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
