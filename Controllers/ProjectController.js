@@ -44,4 +44,56 @@ const getMyProjects = asyncHandler(async (req, res) => {
   }
 });
 
-export { createProject, getMyProjects };
+// Update Project
+const updateProject = asyncHandler(async (req, res) => {
+  const project = await Project.findById(req.params.projectId);
+  const user = req.user._id;
+
+  if (project && project.creator.equals(user)) {
+    project.about = req.body.about || project.about;
+    project.completed = req.body.completed || project.completed;
+    project.issues = req.body.issues || project.issues;
+    project.name = req.body.name || project.name;
+    project.permissions = req.body.permissions || project.permissions;
+    project.updated = Date.now();
+
+    const updatedProject = await project.save();
+
+    res
+      .json({
+        about: updatedProject.about,
+        completed: updatedProject.completed,
+        issues: updatedProject.issues,
+        name: updatedProject.name,
+        permissions: updatedProject.permissions,
+        updated: updatedProject.updated,
+      })
+      .status(204);
+  } else if (
+    project &&
+    project.permissions.includes(user) &&
+    !project.creator.equals(user)
+  ) {
+    project.about = req.body.about || project.about;
+    project.issues = req.body.issues || project.issues;
+    project.name = req.body.name || project.name;
+    project.updated = Date.now();
+
+    const updatedProject = await project.save();
+
+    res
+      .json({
+        about: updatedProject.about,
+        issues: updatedProject.issues,
+        name: updatedProject.name,
+        updated: updatedProject.updated,
+      })
+      .status(204);
+  } else {
+    res.status(404);
+    throw new Error("You do not have permissions to change this project");
+    return;
+  }
+});
+
+export { createProject, getMyProjects, updateProject };
