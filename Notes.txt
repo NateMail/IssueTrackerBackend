@@ -29,3 +29,6 @@
 
 . Figure out a way for those that are permitted to give access to others who need it while not being able to remove the creator of the project 
 . Users who own a project are able to create and delete at will and it will add or remove the ProjectId accordingly 
+
+
+. So the way that it works is that everything has to follow the flow of the application.  The first thing that is created is the user.  IF the user has permissions to create a team they can.  After the team is created the project is created.  Those that have permssions in the project may add issues.  Anyone on the team can add a note to the issue.  The only one who can close the issue is the creator of it.  

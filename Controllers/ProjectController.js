@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Project from "../Models/ProjectModel.js";
 import Team from "../Models/TeamModel.js";
-import { updateMyTeam } from "./TeamController.js";
 
 // Create a project
 
