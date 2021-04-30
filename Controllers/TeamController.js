@@ -72,6 +72,8 @@ const updateMyTeam = asyncHandler(async (req, res) => {
 const deleteMyTeam = asyncHandler(async (req, res) => {
   const team = await Team.findById(req.params.teamId);
 
+  // NEED TO ADD A WAY TO DELETE ALL PROJECTS, ISSUES, AND NOTES ASSOCIATED
+
   if (team && team.creator.equals(req.user._id)) {
     await team.remove();
     res.json({ message: "Team was deleted successfully" }).status(204);

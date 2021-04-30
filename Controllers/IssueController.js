@@ -130,6 +130,8 @@ const deleteIssue = asyncHandler(async (req, res) => {
     project.updated = Date.now();
     await project.save();
 
+    // NEED TO ADD A WAY TO DELETE ALL NOTES ASSOCIATED
+
     if (issue && issue.creator.equals(user)) {
       await issue.remove();
       res.json({ message: "Issue was deleted successfully" }).status(204);

@@ -106,6 +106,8 @@ const deleteMyProject = asyncHandler(async (req, res) => {
   const user = req.user._id;
   const team = await Team.findById(project.team);
 
+  // NEED TO ADD A WAY TO DELETE ALL ISSUES AND NOTES ASSOCIATED
+
   if (team && team.creator.equals(user)) {
     const idx = team.projects.indexOf(req.params.projectId);
     team.projects.splice(idx, 1);
