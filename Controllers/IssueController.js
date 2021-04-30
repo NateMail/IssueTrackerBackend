@@ -36,4 +36,16 @@ const createIssue = asyncHandler(async (req, res) => {
   }
 });
 
-export { createIssue };
+// Get My Issues
+const getMyIssues = asyncHandler(async (req, res) => {
+  const myIssues = await Issue.find({ creator: req.user._id });
+
+  if (myIssues) {
+    res.json(myIssues);
+  } else {
+    throw new Error("No Issues found!");
+    return;
+  }
+});
+
+export { createIssue, getMyIssues };
