@@ -51,77 +51,45 @@ const getMyIssues = asyncHandler(async (req, res) => {
 // Update Issue
 const updateIssue = asyncHandler(async (req, res) => {
   const issue = await Issue.findById(req.params.issueId);
-  const project = await Project.findById(req.params.projectId);
+  const project = await Project.findById(issue.project);
   const user = req.user._id;
 
   // project is found and the user has permissions to update it freely
-  if (
+  if (project && project.permissions.includes(user) && issue) {
+    issue.about = req.body.about || issue.about;
+    issue.approved = req.body.approved || issue.approved;
+    issue.completed = req.body.completed || issue.completed;
+    issue.deadline = req.body.deadline || issue.deadline;
+    issue.location = req.body.location || issue.location;
+    issue.status = req.body.status || issue.status;
+    issue.notes = req.body.notes || issue.notes;
+    issue.title = req.body.title || issue.title;
+    issue.subTitle = req.body.subTitle || issue.subTitle;
+    issue.updated = Date.now();
+
+    const updatedIssue = await issue.save();
+
+    res
+      .json({
+        about: updatedIssue.about,
+        approved: updatedIssue.approved,
+        completed: updatedIssue.completed,
+        deadline: updatedIssue.deadline,
+        status: updatedIssue.status,
+        location: updatedIssue.location,
+        notes: updatedIssue.notes,
+        title: updatedIssue.title,
+        subTitle: updatedIssue.subTitle,
+        updated: updatedIssue.updated,
+      })
+      .status(204);
+    // User created the issue but doesn't have project permissions
+  } else if (
     project &&
-    project.permissions.includes(user) &&
+    !project.permissions.includes(user) &&
+    issue &&
     issue.creator.equals(user)
   ) {
-    issue.about = req.body.about || issue.about;
-    issue.approved = req.body.approved || issue.approved;
-    issue.completed = req.body.completed || issue.completed;
-    issue.deadline = req.body.deadline || issue.deadline;
-    issue.location = req.body.location || issue.location;
-    issue.status = req.body.status || issue.status;
-    issue.notes = req.body.notes || issue.notes;
-    issue.title = req.body.title || issue.title;
-    issue.subTitle = req.body.subTitle || issue.subTitle;
-    issue.updated = Date.now();
-
-    const updatedIssue = await issue.save();
-
-    res
-      .json({
-        about: updatedIssue.about,
-        approved: updatedIssue.approved,
-        completed: updatedIssue.completed,
-        deadline: updatedIssue.deadline,
-        status: updatedIssue.status,
-        location: updatedIssue.location,
-        notes: updatedIssue.notes,
-        title: updatedIssue.title,
-        subTitle: updatedIssue.subTitle,
-        updated: updatedIssue.updated,
-      })
-      .status(204);
-  } else if (
-    // Allows a user with permissions to update any issue
-    project &&
-    project.permissions.includes(user) &&
-    !issue.creator.equals(user)
-  ) {
-    issue.about = req.body.about || issue.about;
-    issue.approved = req.body.approved || issue.approved;
-    issue.completed = req.body.completed || issue.completed;
-    issue.deadline = req.body.deadline || issue.deadline;
-    issue.location = req.body.location || issue.location;
-    issue.status = req.body.status || issue.status;
-    issue.notes = req.body.notes || issue.notes;
-    issue.title = req.body.title || issue.title;
-    issue.subTitle = req.body.subTitle || issue.subTitle;
-    issue.updated = Date.now();
-
-    const updatedIssue = await issue.save();
-
-    res
-      .json({
-        about: updatedIssue.about,
-        approved: updatedIssue.approved,
-        completed: updatedIssue.completed,
-        deadline: updatedIssue.deadline,
-        status: updatedIssue.status,
-        location: updatedIssue.location,
-        notes: updatedIssue.notes,
-        title: updatedIssue.title,
-        subTitle: updatedIssue.subTitle,
-        updated: updatedIssue.updated,
-      })
-      .status(204);
-    // Allows the user to update the fields they can
-  } else if (issue && issue.creator.equals(user)) {
     issue.about = req.body.about || issue.about;
     issue.location = req.body.location || issue.location;
     issue.notes = req.body.notes || issue.notes;
@@ -148,4 +116,31 @@ const updateIssue = asyncHandler(async (req, res) => {
   }
 });
 
-export { createIssue, getMyIssues, updateIssue };
+// Delete Issue
+const deleteIssue = asyncHandler(async (req, res) => {
+  const issue = await Issue.findById(req.params.issueId);
+  const user = req.user._id;
+  const project = await Project.findById(issue.project);
+
+  // checks to see if the user has permission to delete the issue
+  if (project && project.permissions.includes(user) && issue) {
+    const idx = project.issues.indexOf(req.params.issueId);
+    project.issues.splice(idx, 1);
+    project.issues = project.issues;
+    project.updated = Date.now();
+    await project.save();
+
+    if (issue && issue.creator.equals(user)) {
+      await issue.remove();
+      res.json({ message: "Issue was deleted successfully" }).status(204);
+    } else {
+      res.status(404);
+      throw new Error("Issue not found");
+    }
+  } else {
+    res.status(404);
+    throw new Error("Project not found");
+  }
+});
+
+export { createIssue, getMyIssues, updateIssue, deleteIssue };
